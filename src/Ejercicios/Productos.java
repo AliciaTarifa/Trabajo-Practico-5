@@ -3,6 +3,10 @@
  */
 package Ejercicios;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+
 /**
  * @author alicia
  * 
@@ -16,16 +20,38 @@ package Ejercicios;
  *
  */
 public class Productos {
-	String nombre;
-	double precio;
-	int vencimiento;
-	boolean perecedero;
+	private String nombre;
+	private double precio;
+	private LocalDate vencimiento;
+	private boolean perecedero;
 	
-	public Productos(String nombre, double precio, int vencimineto, boolean perecedero){
+	public void Producto() {}
+	
+	public Productos(String nombre, double precio, LocalDate vencimineto, boolean esPerecedero){
 		this.nombre = nombre;
 		this.precio = precio;
 		this.vencimiento = vencimineto;
-		this.perecedero = perecedero;
+		this.perecedero = esPerecedero;
+	}
+	public double calcularPrecio() {
+		LocalDate fechaActual = LocalDate.now(); 
+		int diasAVencer = (int) fechaActual.until(this.vencimiento, ChronoUnit.DAYS);
+		
+		if(this.perecedero) {
+			if(diasAVencer == 1) {
+				return this.precio / 4;
+			}else if(diasAVencer == 2) {
+				return this.precio / 3;
+			}else if(diasAVencer == 3) {
+				return this.precio / 2;
+			}else if(diasAVencer > 3){
+				return this.precio;
+			}else {
+				return 0;
+			}
+		}else {
+			return this.precio;
+		}
 	}
 
 	public String getNombre() {
@@ -44,11 +70,11 @@ public class Productos {
 		this.precio = precio;
 	}
 
-	public int getVencimiento() {
+	public LocalDate getVencimiento() {
 		return vencimiento;
 	}
 
-	public void setVencimiento(int vencimiento) {
+	public void setVencimiento(LocalDate vencimiento) {
 		this.vencimiento = vencimiento;
 	}
 
@@ -59,26 +85,6 @@ public class Productos {
 	public void setPerecedero(boolean perecedero) {
 		this.perecedero = perecedero;
 	}
-	
-	double calcular(int cantidad) {
-		double total = 0;
-		if (this.perecedero) {
-			if (this.vencimiento <= 1) {
-				total = (this.precio/4)*cantidad;
-			}
-			else {
-				if((1>this.vencimiento)|| (this.vencimiento<=2)) {
-					total=(this.precio/3)*cantidad;
-				}
-				else {
-					if(this.vencimiento==3) {
-						total=(this.precio/2)*cantidad;
-					}
-				}
-			}
-			total=this.precio*cantidad;
-		}
-		return total;
-	}	
 
+	
 }
